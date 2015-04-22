@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="reveal.js/css/theme/moon.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section>
+                <h1>Firefly Synchronization</h1>
+                <h3>Modeling and Building Pulse-Coupled Oscillators</h3>
+                <p><small>Mike Skirpan</small></p>
+            </section>
+            <section>
+                <h1>Want to check these out again?</h1>
+                <p>Go to <a href="http://mwskirpan.com/chaos-pres">http://mwskirpan.com/chaos-pres</p>
+            </section>
+            <section> 
+                <h2 style="text-align: left">Pulse-Coupled Oscillator</h2>
+                <p>Coupled oscillators that have a limited window of information passing</p>
+                <iframe width="420" height="315" src="https://www.youtube.com/embed/IBgq-_NJCl0" frameborder="0" allowfullscreen></iframe>
+            </section>
+            
+ 
+        </div>
+    </div>
+    <script src="reveal.js/js/reveal.js"></script>
+    <script src="reveal.js/lib/js/head.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            slideNumber: true,
+            keyboard: true,
+            overview: true,
+            transition: 'convex',
+            dependencies: [
+                { src: 'reveal.js/plugin/math/math.js', async: true }
+            ]
+        });
+
+    </script>
