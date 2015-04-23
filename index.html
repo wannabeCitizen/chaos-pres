@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="reveal.js/css/theme/moon.css" id="theme">
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <style>
+        span {
+            color: #AA7739;
+        }
+    </style>
+</head>
+s
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section>
+                <h1>Firefly Synchronization</h1>
+                <h3>Modeling and Building Pulse-Coupled Oscillators</h3>
+                <p><small>Mike Skirpan</small></p>
+            </section>
+            <section>
+                <h1>Want to check these out again?</h1>
+                <p>Go to <a href="http://mwskirpan.com/chaos-pres">http://mwskirpan.com/chaos-pres</a></p>
+            </section>
+            <section> 
+                <h2>Pulse-Coupled Oscillator</h2>
+                <p>Coupled oscillators that have a limited window of information passing</p>
+                <iframe width="420" height="315" src="https://www.youtube.com/embed/IBgq-_NJCl0" frameborder="0" allowfullscreen></iframe>
+            </section>
+            <section>
+                <h2>Goal of this project:</h2>
+                <p>Model the dynamics of firefly synchronization and build an interactive installation</p>
+            </section>
+            <section>
+                <h2 style="text-align: left">Modeling Pulse-coupling</h2>
+                <ul>
+                    <li>Integrate-and-Fire Oscillation</li>
+                    <li>Phase-Reset Adaptation</li>
+                    <li>Phase-Lock Adaptation</li>
+                </ol>
+            </section>
+            <section>
+                <h3>Integrate-and-Fire Oscillators</h3>
+                <ul>
+                    <li>Smooth, monotonic increasing, concave down</li>
+                    <li>Unique fixed point for Return Map - R, which is a repeller</li>
+                    <li>Peskin's Model is a popular approach (below)</li>
+                    <li>When B fires, A's state updates as <span>$min(1, \epsilon + f(1 - \phi))$<span></li>
+                </ol>
+                <img src="img/integrate_fire.png" width="80%">
+                <small>Mirollo, Renato E., and Steven H. Strogatz. "Synchronization of pulse-coupled biological oscillators." (1990)</small>
+            </section>
+            <section>
+                <h3>State</h3>              
+                <p><span>$x = f(\phi) = C(1 - e^{-\gamma\phi})$<span></p>
+                <p><span>$g(x) = \gamma^{-1} ln( {C\over C-x} )$</span></p>
+
+                <h3>Firing and Return Map</h3>
+                <p><span>$h(\phi) = g( \epsilon + f(1 - \phi))$<span></p>
+                <p><span>$R(\phi) = h(h(\phi))$</span></p>
+                
+                <small>Keep in mind the fixed point repeller for R</small>
+            </section>
+
+          
+            <section>
+                <h2>Phase Reset Adaptation</h2>
+                    <ul>
+                        <li>Each Firefly has a phase "reset strength" - A - which is its ability to instaneously change frequency</li>
+                        <li><span>$\dot{\theta} = \omega + Asin(\phi)$</span></li>
+                        <li>We determine the entrainment region with a dimensionless group $\mu$</li>
+                        <img src="img/entrainment_range.png" width="80%">
+                        <small>Strogatz, Steven H. "Nonlinear dynamics and chaos: with applications to physics, biology, chemistry, and engineering."</small>
+                    </ul>
+            </section>
+            <section>
+                <h3>Small A (top) vs. Big A (bottom)</h3>
+                <img style="background:white" src="img/phase_drift_adaptive.png" width="80%">
+                <img style="background:white" src="img/phase_drift_highA.png" width="80%">
+            </section>
+            <section>
+                <h3>Argh! Machine Epsilon means we always miss the fixed point</h3>
+                <img style="background:white" src="img/w_drift_adaptive.png" width="80%">
+                <small>But this also has to do with my coding model - but that's coming..</small>
+            </section>
+            <section>
+                <h2>Phase-Lock Adaptation</h2>
+                <ul>
+                    <li>Uses a Phase Response Curve and a decay to adapt frequency</li>
+                    <li>$\omega_{n+1} = \omega_n + \epsilon(\omega_{nat} - \omega_n) + g^+(\phi)(\omega_{min} - \omega_n) + g^-(\phi)(\omega_{max} - \omega_n)$</li>
+                    <li>$g^+(\phi) = max({1\over{2\pi}} sin(2\pi\phi), 0)$</li>
+                    <li>$g^-(\phi) = - min({1\over{2\pi}} sin(2\pi\phi), 0)$</li>
+            </section>
+            <section>
+                <h3>Max and Min functions give locking regardless of machine epsilons</h3>
+                <img style="background:white" src="img/phase_lock.png" width="80%">
+            </section>
+            <section>
+                <img style="background:white" src="img/period_lock.png">
+            </section>
+            <section>
+                <h2>What does the adaptation actually look like?</h2>
+                <ul>
+                    <li>Demo 1: <a href="http://mwskirpan.com/chaos-pres/pulseCouple.html" target="_blank">Phase Reset</a></li>
+                    <li>Demo 2: <a href="http://mwskirpan.com/chaos-pres/pulseLock.html" target="_blank">Phase Lock</a></li>
+                    <li>Do you see any difference? (it's quite hard for short time periods)</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Back to my installation goal:</h2>
+                <p>How do I represent a large system of these and then present these in a beautiful way (ie, fast updates and interesting visuals)?</p>
+                <p>Is there any utility in exploiting the phase drift around the repeller?</p>
+                <p>What would create an interesting interactive experience?</p>
+            </section>
+            <section>
+                <h2>Coding insight:</h2>
+                <p>Complex agent model (means I'm not doing adaptive RK4 so there's more noise as hinted to before)</p>
+                <small>Tip of the hat to Niklas Fejes for the suggestion</small>
+                <h2>Installation Insight:</h2>
+                <p>May not want all FF's to entrain (prettier)</p>
+                <p>If so, want it to take some time so it's not just flashing in your face</p>
+            </section>
+            <section>
+                <h2>Making this an installation</h2>
+                <ul>
+                    <li>Raspberry Pi sending PWM to 400 addressable RGB LEDs</li>
+                    <li>External Power Supply to prevent signal loss</li>
+                    <li>Can interact by pressing a button twice and setting a beat</li>
+                </ul>
+            </section>
+            <section>
+                <img src="img/wires.jpg" width="60%">
+            </section>
+            <section>
+                <img src="img/measuring.jpg" width="60%">
+            </section>
+            <section>
+                <img src="img/solder.jpg" width="60%">
+            </section>
+            <section>
+                <h2>Time for a Live Demo</h2>
+                <p>Oh and please come to the ATLAS Expo on 4/29 @ 5-630 PM to check it out</p>
+            </section>
+        </div>
+    </div>
+    <script src="reveal.js/js/reveal.js"></script>
+    <script src="reveal.js/lib/js/head.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            slideNumber: true,
+            keyboard: true,
+            overview: true,
+            transition: 'convex',
+            dependencies: [
+                { src: 'reveal.js/plugin/math/math.js', async: true }
+            ]
+        });
+
+    </script>
