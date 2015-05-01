@@ -4,6 +4,7 @@ var thetaStim = 0.0;
 var thetaFollow = 0.0;      // Start angle at 0
 var wStim = 3.5;
 var wFollow = 2;
+var w0 = 2;
 var amplitude = 90.0; // Height of wave
 var period = 1400.0;   // How many pixels before the wave repeats
 var dx;               // Value for incrementing x
@@ -32,7 +33,7 @@ function draw() {
 
 function stim() {
     reg = blinker;
-    wFollow = wFollow + 2*sin(thetaStim - thetaFollow);
+    wFollow = w0 + 2*sin(thetaStim - thetaFollow);
 
     setTimeout(function() { reg = 255;}, 500); 
 }
